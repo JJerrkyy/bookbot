@@ -1,6 +1,11 @@
-def get_book_text(path):
-    with open(path) as f:
-        return f.read()
+import sys
+if len(sys.argv) != 2:
+    print("Usage: python3 main.py <path_to_book>")
+    sys.exit(1)
+
+def get_book_text(f):
+    file_contents = f.read()
+    return file_contents
 
 from stats import (get_num_words,
                    chars_dict_to_sorted_list, 
@@ -8,28 +13,26 @@ from stats import (get_num_words,
                    )
 
 def main():
-    book_path = "books/frankenstein.txt"
-    text = get_book_text(book_path)
-    num_words = get_num_words(text)
-    num_characters = get_num_characters(text)
-    chars_sorted_list = chars_dict_to_sorted_list(num_characters)
-    print_report(book_path, num_words, chars_sorted_list)
+    with open(sys.argv[1]) as f:
+         book1 = get_book_text(f)
+         book2 = get_num_words(book1)
+         book3 = get_num_characters(book1)
+         book4 = chars_dict_to_sorted_list(book3)
+         print_report(book1, book2, book4)
 
 
+def print_report(book4, book2, chars_sorted_list):
+        print("============ BOOKBOT ============")
+        print(f"Analyzing book found at {sys.argv[1]}...")
+        print("----------- Word Count ----------")
+        print(f"Found {book2} total words")
+        print("--------- Character Count -------")
 
-def print_report(book_path, num_words, chars_sorted_list):
-    print("============ BOOKBOT ============")
-    print(f"Analyzing book found at {book_path}...")
-    print("----------- Word Count ----------")
-    print(f"Found {num_words} total words")
-    print("--------- Character Count -------")
-    for item in chars_sorted_list:
-        if not item["letter"].isalpha():
-            continue
-        print(f"{item['letter']}: {item['count']}")
-
-    print("============= END ===============")
-
+        for item in chars_sorted_list:
+            if not item["letter"].isalpha():
+                continue
+            print(f"{item['letter']}: {item['count']}")
+        print("============= END ===============")
 
 main()
 
